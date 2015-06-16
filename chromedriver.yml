@@ -1,0 +1,35 @@
+- name: Make sure that the directory to hold the chromedriver binary exists
+  file:
+    path: "/tmp/binaries/chromedriver"
+    state: directory
+    recurse: yes
+    mode: 0755
+
+- name: Download the chromedriver binary for ubuntu
+  get_url:
+    url: "http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip"
+    dest: "/tmp/binaries/chromedriver/chromedriver.zip"
+
+- name: Unpack the chromedriver package
+  unarchive:
+    src :  "/tmp/binaries/chromedriver/chromedriver.zip"
+    dest : "/usr/local/share"
+    copy : no
+
+- name: Make the binary executable
+  command: chmod +x /usr/local/share/chromedriver
+  ignore_errors: yes
+
+- name: Update the symbolic link to the chromedriver install (pt.1)
+  file:
+    path: "/usr/local/bin/chromedriver"
+    src: "/usr/local/share/chromedriver"
+    state: link
+    force: yes
+
+- name: Update the symbolic link to the chromedriver install (pt.2)
+  file:
+    path: "/usr/bin/chromedriver"
+    src: "/usr/local/share/chromedriver"
+    state: link
+    force: yes

@@ -1,0 +1,6 @@
+---
+# test file for selenium
+- hosts: localhost
+  remote_user: root
+  roles:
+    - ansible-selenium

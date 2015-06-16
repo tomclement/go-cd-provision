@@ -1,0 +1,46 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    - nodejs_version: "0.10.22"
+    - nodejs_install_method: "binary"
+    - xvbf_enabled: yes
+
+    - postgresql_users:
+      - name: go
+        pass: go
+        encrypted: no
+    - postgresql_user_privileges:
+      - name: go
+        db: postgres
+        role_attr_flags: "CREATEDB"
+
+  tasks:
+    - name: install git
+      apt: name=git state=present
+
+    - name: install PhantomJS
+      apt: name=phantomjs state=present
+
+    - name: install postgresql-dev dependencies
+      apt: name=libpq-dev state=present
+
+    - name: check if chromedriver is installed
+      command: /usr/bin/which chromedriver
+      ignore_errors: yes
+      register: chromedriver_path
+
+    - include: chromedriver.yml
+      when: chromedriver_path.rc == 1
+
+    - name: make sure XVFB service is started
+      command: /etc/init.d/xvfb start
+
+  roles:
+    - ANXS.nodejs
+    - ANXS.python
+    - ANXS.postgresql
+    - Stouts.mongodb
+    - ThePixelDeveloper.selenium
+    - ThePixelDeveloper.google-chrome
+    - alban.andrieu.xvbf

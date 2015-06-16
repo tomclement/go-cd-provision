@@ -1,0 +1,9 @@
+---
+# tasks file for google-chrome
+- name: download
+  get_url: url="https://dl.google.com/linux/direct/google-chrome-stable_current_{{ google_chrome_arch }}.deb" dest=/tmp
+  tags: [configuration, google-chrome, google-chrome-download]
+
+- name: install
+  apt: deb="/tmp/google-chrome-stable_current_{{ google_chrome_arch }}.deb"
+  tags: [configuration, google-chrome, google-chrome-install]
