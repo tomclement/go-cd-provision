@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  author: "Tim Brown"
+  description: "Install the Go Continuous Delivery tool.  Model even the most complex build and deploy workflow with ease."
+  company: "ThoughtWorks, Inc."
+  license: MIT
+  min_ansible_version: 1.6
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  categories:
+    - development
+dependencies: []

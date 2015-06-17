@@ -1,0 +1,5 @@
+
+.vagrant/
+vagrant_ansible_inventory*
+tests/config.xml
+tests/GO_RUNNING

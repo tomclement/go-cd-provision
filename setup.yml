@@ -2,6 +2,9 @@
 - hosts: all
   sudo: yes
   vars:
+    - GOCD_ADMIN_EMAIL: admin@example.com
+    - GOCD_AGENT_INSTANCES: 2
+
     - nodejs_version: "0.10.22"
     - nodejs_install_method: "binary"
     - xvbf_enabled: yes
@@ -37,6 +40,7 @@
       command: /etc/init.d/xvfb start
 
   roles:
+    - tpbrown.gocd
     - ANXS.nodejs
     - ANXS.python
     - ANXS.postgresql

@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+[thoughtworks-go-download]
+name=Thoughtworks Go Repository
+baseurl=http://dl.bintray.com/gocd/gocd-rpm/
+enabled=1
+gpgcheck=0
