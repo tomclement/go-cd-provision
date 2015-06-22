@@ -1,0 +1,3 @@
+#Ignore local inventory and files directory
+inventory
+files/*
