@@ -21,16 +21,13 @@
         role_attr_flags: "CREATEDB"
 
     - nginx_sites:
-      - server:
-        name: localhost
-        listen: 80
-        server_name: localhost
-        location1:
-          name: "/"
-          try_files: "$uri $uri/ /index.html /index.htm =404"
+        default:
+            - listen 8080
+            - server_name localhost
+            - root "/testResults/html"
+            - index /index.html
+            - location / { try_files $uri $uri/ /index.html /index.htm =404; }
 
-    - nginx_www_dir: /testResults/html
-    - nginx_default_root: /testResults/html
 
   pre_tasks:
     - name: install linux-image-extra
@@ -50,7 +47,7 @@
       apt: name=libpq-dev state=present
 
     - name: create /testResults directory and make go the owner
-      file: path=/testResults state=directory owner=go
+      file: path=/testResults state=directory owner=go recurse=yes
 
     - name: check if chromedriver is installed
       command: /usr/bin/which chromedriver
