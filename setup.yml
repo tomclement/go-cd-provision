@@ -9,6 +9,8 @@
     - nodejs_install_method: "binary"
     - xvbf_enabled: yes
 
+    - docker_pkg_name: lxc-docker-1.5.0
+
     - postgresql_users:
       - name: go
         pass: go
@@ -18,15 +20,37 @@
         db: postgres
         role_attr_flags: "CREATEDB"
 
+    - nginx_sites:
+      - server:
+        name: localhost
+        listen: 80
+        server_name: localhost
+        location1:
+          name: "/"
+          try_files: "$uri $uri/ /index.html /index.htm =404"
+
+    - nginx_www_dir: /testResults/html
+    - nginx_default_root: /testResults/html
+
+  pre_tasks:
+    - name: install linux-image-extra
+      apt: name=linux-image-extra-3.13.0-32-generic state=present
+
   tasks:
     - name: install git
       apt: name=git state=present
+
+    - name: install ant
+      apt: name=ant state=present
 
     - name: install PhantomJS
       apt: name=phantomjs state=present
 
     - name: install postgresql-dev dependencies
       apt: name=libpq-dev state=present
+
+    - name: create /testResults directory and make go the owner
+      file: path=/testResults state=directory owner=go
 
     - name: check if chromedriver is installed
       command: /usr/bin/which chromedriver
@@ -39,6 +63,13 @@
     - name: make sure XVFB service is started
       command: /etc/init.d/xvfb start
 
+    - name: add go account to sudoers
+      lineinfile: dest=/etc/sudoers.d/01go owner=root group=root mode=0440
+                  line="%go ALL=(ALL) NOPASSWD:ALL"
+                  state=present
+                  create=yes
+                  validate='visudo -cf %s'
+
   roles:
     - tpbrown.gocd
     - ANXS.nodejs
@@ -49,3 +80,4 @@
     - ThePixelDeveloper.google-chrome
     - alban.andrieu.xvbf
     - angstwad.docker_ubuntu
+    - ANXS.nginx
