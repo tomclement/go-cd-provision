@@ -9,8 +9,6 @@
     - nodejs_install_method: "binary"
     - xvbf_enabled: yes
 
-    - docker_pkg_name: lxc-docker-1.5.0
-
     - postgresql_users:
       - name: go
         pass: go
